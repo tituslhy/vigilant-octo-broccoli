@@ -1,9 +1,10 @@
 from google.adk.agents.llm_agent import Agent
 
 import httpx
-import os
-from dotenv import load_dotenv, find_dotenv
 from typing import Annotated
+from google.adk.a2a.utils.agent_to_a2a import to_a2a
+
+from dotenv import load_dotenv, find_dotenv
 
 _ = load_dotenv(find_dotenv())
 
@@ -40,8 +41,10 @@ async def get_exchange_rates(
     
 root_agent = Agent(
     model='gemini-2.5-flash',
-    name='root_agent',
+    name='currency_exchange_agent',
     description='You are a helpful assistant for user questions relating to exchange rates.',
-    instruction='Answer user questions to the best of your knowledge',
+    instruction='Answer user questions to the best of your knowledge using tools',
     tools = [get_exchange_rates],
 )
+
+a2a_currency_app = to_a2a(root_agent, port=8001)
