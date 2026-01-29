@@ -1,0 +1,47 @@
+from google.adk.agents.llm_agent import Agent
+
+import httpx
+import os
+from dotenv import load_dotenv, find_dotenv
+from typing import Annotated
+
+_ = load_dotenv(find_dotenv())
+
+async def get_exchange_rates(
+    currency_from: Annotated[str, "Currency to exchange from. For e.g. USD"],
+    currency_to: Annotated[str, "Currency to exchange to. For e.g. EUR"]
+):
+    """
+    Use this tool to get exchange rates between two currencies.
+    
+    Args:
+        currency_from: The currency to convert from (e.g., "USD").
+        currency_to: The currency to convert to (e.g., "EUR").
+
+    Returns:
+        A dictionary containing the exchange rate data, or an error message if the request fails.
+    """
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.get(
+                "https://api.frankfurter.app/latest",
+                params={"from": currency_from, "to": currency_to},
+            )
+            response.raise_for_status()
+
+            data = response.json()
+            if "rates" not in data:
+                return {"error": "Invalid API response format."}
+            return data
+    except httpx.HTTPError as e:
+        return {"error": f"API request failed: {e}"}
+    except ValueError:
+        return {"error": "Invalid JSON response from API."}
+    
+root_agent = Agent(
+    model='gemini-2.5-flash',
+    name='root_agent',
+    description='You are a helpful assistant for user questions relating to exchange rates.',
+    instruction='Answer user questions to the best of your knowledge',
+    tools = [get_exchange_rates],
+)
