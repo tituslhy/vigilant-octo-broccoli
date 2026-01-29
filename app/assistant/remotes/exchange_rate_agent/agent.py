@@ -3,10 +3,16 @@ from google.adk.agents.llm_agent import Agent
 import httpx
 from typing import Annotated
 from google.adk.a2a.utils.agent_to_a2a import to_a2a
+from google.adk.models.lite_llm import LiteLlm
 
 from dotenv import load_dotenv, find_dotenv
 
 _ = load_dotenv(find_dotenv())
+
+llm = LiteLlm(
+    model="ollama_chat/gpt-oss:20b",
+    temperature=0,
+)
 
 async def get_exchange_rates(
     currency_from: Annotated[str, "Currency to exchange from. For e.g. USD"],
@@ -40,7 +46,8 @@ async def get_exchange_rates(
         return {"error": "Invalid JSON response from API."}
     
 root_agent = Agent(
-    model='gemini-2.5-flash',
+    model = llm,
+    # model='gemini-2.5-flash',
     name='currency_exchange_agent',
     description='You are a helpful assistant for user questions relating to exchange rates.',
     instruction='Answer user questions to the best of your knowledge using tools',

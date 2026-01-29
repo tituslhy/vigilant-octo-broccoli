@@ -1,6 +1,12 @@
 from google.adk.agents.remote_a2a_agent import AGENT_CARD_WELL_KNOWN_PATH
 from google.adk.agents.remote_a2a_agent import RemoteA2aAgent
 from google.adk.agents.llm_agent import Agent
+from google.adk.models.lite_llm import LiteLlm
+
+llm = LiteLlm(
+    model="ollama_chat/gpt-oss:20b",
+    temperature=0,
+)
 
 currency_agent = RemoteA2aAgent(
     name="currency_agent",
@@ -19,7 +25,8 @@ weather_agent = RemoteA2aAgent(
 )
 
 root_agent = Agent(
-    model='gemini-2.5-flash',
+    model=llm,
+    # model='gemini-2.5-flash',
     name='root_agent',
     instruction="""
     You are a helpful assistant. Answer user questions to the best of your knowledge
