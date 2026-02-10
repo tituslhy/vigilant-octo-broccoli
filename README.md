@@ -1,6 +1,12 @@
 # vigilant-octo-broccoli
 Introducing Google's ADK Framework
 
+<p align="center">
+    <img src="./images/adk.png" height="400">
+</p>
+
+This article is a companion repository to an upcoming Medium article.
+
 ## To run remote A2A services:
 ```
 cd app
