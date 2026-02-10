@@ -5,7 +5,7 @@ Introducing Google's ADK Framework
     <img src="./images/adk.png" height="400">
 </p>
 
-This article is a companion repository to an upcoming Medium article.
+This article is a companion repository to the Medium article [📱Would you like an app with that? — Introducing the ADK Framework](https://medium.com/@tituslhy/would-you-like-an-app-with-that-introducing-the-adk-framework-aead05a8b9cd?postPublishedType=initial)
 
 ## To run remote A2A services:
 ```
